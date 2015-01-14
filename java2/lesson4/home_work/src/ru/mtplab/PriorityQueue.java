@@ -11,7 +11,14 @@ public class PriorityQueue<K extends Comparable<K>, T> {
     // Список в котором хранятся все вершины бинарной кучи.
     private List<Vertex<K, T>> data = new ArrayList<Vertex<K, T>>();
 
-
+    /**
+     * Новый элемент при добавлении должен занять "свое" место в бинарной куче.
+     * Для этого мы добавляем его в конец списка и, в случае нарушения основного свойства кучи,
+     * начинаем его "поднимать". Иначе говоря, элемент "всплывает", занимая свое место.
+     *
+     * @param priority Приоритет, в соответствии с которым элемент займет место в очереди.
+     * @param value    Значение элемента
+     */
     public void insert(K priority, T value) {
         Vertex<K, T> vertex = new Vertex<K, T>(priority, value);
         data.add(vertex);
@@ -29,6 +36,12 @@ public class PriorityQueue<K extends Comparable<K>, T> {
         }
     }
 
+    /**
+     * Возвращает (с удалением из кучи) значение элемента, находящегося в корне бинарного кучи.
+     * У этого элемента будет самый высокий приоритет.
+     *
+     * @return Значение элемента с самым высоким приоритетом с учетом порядка очереди.
+     */
     public T getMax() {
         Vertex<K, T> res = this.data.get(0);
         this.data.set(0, this.data.get(this.queueSize() - 1));
@@ -38,10 +51,19 @@ public class PriorityQueue<K extends Comparable<K>, T> {
         return res.getValue();
     }
 
+    /**
+     * Размер очереди
+     * @return Размер очереди
+     */
     public int queueSize() {
         return data.size();
     }
 
+    /**
+     * Восстанавливает основное свойство кучи. Для этого необходимо "опускать" i-ую вершину (менять местами с
+     * наибольшим из потомков), пока основное свойство не будет восстановлено
+     * @param i Индекс вершины дерева для которого надо восстановить основное свойство max-heap
+     */
     public void heapify(int i) {
         int leftChild;
         int rightChild;
